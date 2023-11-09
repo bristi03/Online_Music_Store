@@ -63,7 +63,6 @@ def register():
 
     except Exception as e:
        print(e)
-       return 'ok',200
        error_message = str(e)
        # Find the start and end positions of the 'error' object
        start_idx = error_message.find('{')
