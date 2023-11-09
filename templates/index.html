@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify - Web Player</title>
+    <link rel="icon" href="static/images/icon.png" />
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link
+    rel="stylesheet"
+    href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+    crossorigin="anonymous"
+    />
+    <script type="application/javascript" defer src="../static/js/script.js"></script>
+</head>
+<body>
+
+  <!-- Sidebar -->
+
+  <div id="sidebar">
+      <div id="logo">
+          <img src="../static/images/logo.png" alt="spotify logo" />
+      </div>
+      <div id="navigation">
+          <a href="#" class="navigation_item">
+              <i class="fas fa-home"></i> 
+              <span>Home</span>
+          </a>
+          <a href="/search" class="navigation_item">
+            <i class="fas fa-search"></i>
+            <span>Search</span>
+        </a>
+          <a href="#" class="navigation_item">
+              <i class="fas fa-grip-lines-vertical"></i> 
+              <span>Your Library</span>
+          </a>
+      </div>
+      <div id="cta">
+          <a href="#" class="cta_item">
+              <span class="cta__icon" id="plus">
+                  <i class="fas fa-plus"></i>
+              </span> 
+              <span>Create Playlist</span>
+          </a>
+          <a href="#" class="cta_item">
+              <span class="cta__icon" id="heart">
+                  <i class="fas fa-heart"></i>
+              </span> 
+              <span>Liked Songs</span>
+          </a>
+          
+      </div>
+      <hr class="line" />
+      <div id="bottom">
+          <ul id="music__list">
+              <li class="music__item"><a href="#" class="music__link">Music Hip-Hop 1</a></li>
+              <li class="music__item"><a href="#" class="music__link">Music Hip-Hop 2</a></li>
+              <li class="music__item"><a href="#" class="music__link">Music Hip-Hop 3</a></li>
+          </ul>
+          <div class="download__item">
+              <a href="#" id="download__link">
+                  <i class="fas fa-arrow-circle-down"></i> Install App
+              </a>
+          </div>
+    </div>
+  </div>
+
+  <!-- Content Section, inclues the navbar and the main content -->
+
+  <div id="content">
+
+    <!-- NavBar -->
+
+      <nav>
+          <div class="navigate">
+            <i class="far fa-chevron-left"></i>
+            <i class="far fa-chevron-right"></i>
+          </div>
+          <div class="buttons">
+            <button class="btn btn-upgrade">upgrade</button>
+            <div class="profile-dropdown">
+              <div class="visible">
+                <img src="../static/images/user.png" alt="User" />
+                <span id="user">User</span>
+                <i class="fas fa-sort-down arrow"></i>
+              </div>
+              <div class="hidden">
+                <ul>
+                  <li class="link">
+                    Account
+                    <i class="far fa-external-link-alt"></i>
+                  </li>
+                  <li>Profile</li>
+                  <li class="link">
+                    Upgrade to Premium
+                    <i class="far fa-external-link-alt"></i>
+                  </li>
+                  <li>Log out</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </nav>
+
+        <!-- Main Content -->
+
+        <main id="main">
+
+          <!-- Top Card Collection -->
+
+          <div class="card__container">
+            <div class="card__title">
+              <h1 class="card__heading">Trending Today</h1>
+            </div>
+            <div class="card__collection">
+              <div class="card_top">
+                <img src="../static/images/content/finshots.jpg" alt="Finshots" />
+                <div class="card__info">
+                  <p class="card_name">Finshots Daily</p>
+                  <p class="card_artist">Finshots</p>
+                </div>
+                <i class="fas fa-circle"></i>
+              </div>
+              <div class="card_top">
+                <img src="../static/images/content/timFerriss.jpg" alt="Tim Ferris" />
+                <div class="card__info">
+                  <p class="card_name">The Tim Ferriss Show</p>
+                  <p class="card_artist">Tim Ferris</p>
+                </div>
+              </div>
+              <div class="card_top">
+                <img src="../static/images/content/zerodhaPodcast.jpg" alt="Zerodha Educate" />
+                <div class="card__info">
+                  <p class="card_name">Zerodha Educate</p>
+                  <p class="card_artis">Zerodha</p>
+                </div>
+              </div>
+              <div class="card_top">
+                <img src="../static/images/content/lofi.jpg" alt="Lofi" />
+                <div class="card__info">
+                  <p class="card_name">Lofi - Coffee</p>
+                  <p class="card_artis">Lofi</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Common Card Containers  -->
+
+          <div class="card__container">
+            <div class="card__title">
+              <h1 class="card__heading">Your Liked Songs</h1>
+              <p>SEE ALL</p>
+            </div>
+
+            <!-- Card Collection, music content is added dynamically with JavaScript -->
+
+            <div class="card__collection_main"></div>
+          </div>
+          <div class="card__container">
+            <div class="card__title">
+              <h1 class="card__heading">Your Collection</h1>
+              <p>SEE ALL</p>
+            </div>
+
+            <!-- Card Collection, music content is added dynamically with JavaScript -->
+
+            <div class="card__collection_main reverse"></div>
+          </div>
+          <div class="card__container">
+            <div class="card__title">
+              <h1 class="card__heading">Your Songs</h1>
+              <p>SEE ALL</p>
+            </div>
+
+            <!-- Card Collection, music content is added dynamically with JavaScript -->
+
+            <div class="card__collection_main reverse"></div>
+          </div>
+          <div class="card__container">
+            <div class="card__title">
+              <h1 class="card__heading">Your Collection</h1>
+              <p>SEE ALL</p>
+            </div>
+
+            <!-- Card Collection, music content is added dynamically with JavaScript -->
+
+            <div class="card__collection_main reverse"></div>
+          </div>
+        </main>
+  </div>
+
+  <!-- Music Player Head -->
+
+  <div id="player">
+    <div id="player__artist">
+      <img src="../static/images/artist_image.jpeg" alt="artist image" class="artist_image" />
+      <span class="artist_details">
+        <a class="song">Eternal Youth</a>
+        <a class="artist">RUDE</a>
+      </span>
+      <i class="fas fa-heart likeBtn" title="Like Song"></i>
+      <i class="fas fa-external-link-alt"></i>
+    </div>
+    <div id="player__controls">
+      <div id="controls">
+        <i class="fas fa-random btn"  title="Enable Shuffle"></i>
+        <i class="fas fa-step-backward btn" id="backward-btn" title="Previous"></i>
+        <i class="fas fa-play-circle btn" id="playBtn" title="Play" style="display: inline-block; font-size: 1.3rem;"></i>
+        <i class="fas fa-pause-circle btn" id="pauseBtn" title="Pause" style="display: inline-block; font-size: 1.3rem;"></i>
+        <i class="fas fa-step-forward btn" id="forward-btn" title="Next"></i>
+        <i class="fas fa-retweet btn" id="repeat-btn" title="Repeat"></i>
+      </div>
+      <div id="timeline">
+        <div id="current-time"></div>
+          <input type="range" value="0" class="player_line" id="seek-bar">
+        <div class="duraton-time" id="end_time">3:25</div>
+      </div>
+    </div>
+    <div id="player__cta">
+      <i class="fas fa-music" title="Lyrics"></i>
+      <i class="fas fa-list" title="Queue"></i>
+      <i class="fas fa-desktop" title="Connect to a Device"></i>
+      <i class="fas fa-volume-up" title="Volume"></i>
+      <hr class="speaker_line"/>
+    </div>
+  </div>
+</body>
+</html>
