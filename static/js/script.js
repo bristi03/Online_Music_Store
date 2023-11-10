@@ -341,5 +341,44 @@ document.addEventListener("DOMContentLoaded", async() => {
     updateCollection();
 })
 
+let searchinp = document.getElementById("search-input");
+let searchoup = document.getElementById("search-output");
 
+const searchSongs = (searchTerm) => {
+    return songs.filter((song) => {
+        const lowerCaseSearchTerm = searchTerm.toLowerCase();
+        const lowerCaseSongName = song.name.toLowerCase();
+        const lowerCaseArtist = song.artist.toLowerCase();
 
+        return (
+            lowerCaseSongName.includes(lowerCaseSearchTerm) ||
+            lowerCaseArtist.includes(lowerCaseSearchTerm)
+        );
+    });
+};
+
+// Function to update the search results in the search-output div
+const updateSearchResults = (searchResults) => {
+    searchoup.innerHTML = "";
+
+    searchResults.forEach((song) => {
+        searchoup.appendChild(createCard(song));
+    });
+};
+
+// Event listener for the search button
+document.getElementById("searchBtn").addEventListener("click", () => {
+    const searchTerm = searchinp.value.trim();
+
+    if (searchTerm !== "") {
+        const searchResults = searchSongs(searchTerm);
+        console.log(searchResults);
+        updateSearchResults(searchResults);
+    }
+});
+
+// Once the document if fully loaded, call the update collection function
+// and add the functionality to the Spotify Clone.
+document.addEventListener("DOMContentLoaded", async () => {
+    updateCollection();
+});
