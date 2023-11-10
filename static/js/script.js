@@ -344,25 +344,7 @@ document.addEventListener("DOMContentLoaded", async() => {
 let searchinp = document.getElementById("search-input");
 let searchoup = document.getElementById("search-output");
 
-function confirm_logout(){
-    let result=confirm("You are about to logout!");
-    if(result){
-        $.ajax({
-            type: "GET",
-            url: "/logout",
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            success: function (response) {
-                console.log(response);
-                window.location.href = "/";
-            },
-            error: function (error) {
-                console.error(error);
-                alert(error.responseJSON.message);
-            }
-        });
-    }
-}
+
 const searchSongs = (searchTerm) => {
     return songs.filter((song) => {
         const lowerCaseSearchTerm = searchTerm.toLowerCase();
