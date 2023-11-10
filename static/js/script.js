@@ -388,6 +388,18 @@ const updateSearchResults = (searchResults) => {
 // Event listener for the search button
 document.getElementById("searchBtn").addEventListener("click", () => {
     const searchTerm = searchinp.value.trim();
+    if (searchTerm !== "") {
+        const searchResults = searchSongs(searchTerm);
+        console.log(searchResults);
+        updateSearchResults(searchResults);
+    }
+});
+
+// Once the document if fully loaded, call the update collection function
+// and add the functionality to the Spotify Clone.
+document.addEventListener("DOMContentLoaded", async () => {
+    updateCollection();
+});
 
 function confirm_logout(){
     let result=confirm("You are about to logout!");
@@ -408,15 +420,3 @@ function confirm_logout(){
         });
     }
 }
-    if (searchTerm !== "") {
-        const searchResults = searchSongs(searchTerm);
-        console.log(searchResults);
-        updateSearchResults(searchResults);
-    }
-});
-
-// Once the document if fully loaded, call the update collection function
-// and add the functionality to the Spotify Clone.
-document.addEventListener("DOMContentLoaded", async () => {
-    updateCollection();
-});
