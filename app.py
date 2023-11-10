@@ -3,7 +3,7 @@ from flask_session import Session
 from flask_pymongo import PyMongo
 import pyrebase
 import json
-
+import pymongo
 
 
 firebase_config = {
@@ -25,16 +25,19 @@ app.config['SECRET_KEY'] = '$wX2RjLzA3bTkH1iGfSg4MnC5QoDpUqV8xYvZ9sE6uF7tIyPwN'
 
 app.config["SESSION_TYPE"] = "mongodb"
 
-
-Session(app)
 mongo_uri="mongodb+srv://maitybristi53:SllXwJZSpfEqQcpm@cluster0.r0oeefw.mongodb.net/UserData?ssl=true"
 
-mongo=PyMongo(app,mongo_uri)
+mongo=PyMongo(app,mongo_uri,port=9999)
 db=mongo.db
-app.config["SESSION_MONGODB"] = mongo
+
+
+app.config["SESSION_MONGODB"] = pymongo.MongoClient(
+    host="mongodb+srv://maitybristi53:SllXwJZSpfEqQcpm@cluster0.r0oeefw.mongodb.net/?ssl=true"
+)
 app.config["SESSION_MONGODB_DB"] = "UserSessions"
 app.config["SESSION_MONGODB_COLLECT"] = "sessions"
 
+Session(app)
 
 def Register_user(name,email):
     collection=db.Users

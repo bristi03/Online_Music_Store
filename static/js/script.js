@@ -2,70 +2,11 @@
 // {songs} means destructuring the ojbect from the right.
 //Note: the destructing should be key specific. 
 //If songs is an key in the object, then only it will get the songs array.
-let {songs} = {
-    "songs": [
-        {
-            "name": "Chale Aana",
-            "artist": "Armaan Malik",
-            "location": "./static/assets/Chale aana.mp3",
-            "image": "./static/images/artist_image.jpeg",
-            "liked": true,
-            "id": 0
-        },
-        {
-            "name": "Closer",
-            "artist": "The Chainsmokers",
-            "location": "static/assets/Closer.mp3",
-            "image": "static/images/content/nggyp.jpg",
-            "liked": false,
-            "id": 1
-        },
-        {
-            "name": "Keeping It",
-            "artist": "Sou",
-            "location": "static/assets/keepingIt.mp3",
-            "image": "static/images/content/keepingIt.png",
-            "liked": false,
-            "id": 2
-        },
-        {
-            "name": "Eye of the Tiger",
-            "artist": "Surviour",
-            "location": "static/assets/eyeTiger.mp3",
-            "image": "static/images/content/survivor.jpg",
-            "liked": false,
-            "id": 3
-        },
-        {
-            "name": "Kenny G Collection",
-            "artist": "Kenny G",
-            "location": "static/assets/kenny.mp3",
-            "image": "static/images/content/kennyg.jpg",
-            "liked": false,
-            "id": 4
-        },
-        {
-            "name": "Noctornal",
-            "artist": "The Midnight",
-            "location": "static/assets/noctornal.mp3",
-            "image": "static/images/content/noctornal.jpg",
-            "liked": true,
-            "id": 5
-        },
-        {
-            "name": "Unravel",
-            "artist": "TK",
-            "location": "static/assets/unravel.mp3",
-            "image": "static/images/content/unravel.jpg",
-            "liked": false,
-            "id": 6
-        }
-    ]
-};
 
+var songs;
 // Getting required elemets, const to not allow reinitialization
 // let for reinitialization of that elements to update from DOM.
-const playerHead = document.getElementById("player");
+var playerHead = document.getElementById("player");
 let playBtn = document.getElementById("playBtn");
 let pauseBtn = document.getElementById("pauseBtn");
 let seekBar = document.querySelector("#seek-bar");
@@ -345,41 +286,21 @@ let searchinp = document.getElementById("search-input");
 let searchoup = document.getElementById("search-output");
 
 
-const searchSongs = (searchTerm) => {
-    return songs.filter((song) => {
-        const lowerCaseSearchTerm = searchTerm.toLowerCase();
-        const lowerCaseSongName = song.name.toLowerCase();
-        const lowerCaseArtist = song.artist.toLowerCase();
-
-        return (
-            lowerCaseSongName.includes(lowerCaseSearchTerm) ||
-            lowerCaseArtist.includes(lowerCaseSearchTerm)
-        );
-    });
-};
-
-// Function to update the search results in the search-output div
-const updateSearchResults = (searchResults) => {
-    searchoup.innerHTML = "";
-
-    searchResults.forEach((song) => {
-        searchoup.appendChild(createCard(song));
-    });
-};
-
-// Event listener for the search button
-document.getElementById("searchBtn").addEventListener("click", () => {
-    const searchTerm = searchinp.value.trim();
-    if (searchTerm !== "") {
-        const searchResults = searchSongs(searchTerm);
-        console.log(searchResults);
-        updateSearchResults(searchResults);
-    }
-});
-
 // Once the document if fully loaded, call the update collection function
 // and add the functionality to the Spotify Clone.
 document.addEventListener("DOMContentLoaded", async () => {
+    await fetch('/static/data/data.json') // Update the path accordingly
+        .then(response => response.json())
+        .then(data => {
+            // Destructure the 'songs' array from the data
+            songs  = data.songs;
+
+            // Use the 'songs' variable here or perform any operations needed
+            console.log(songs); // Just an example to display the 'songs' array in the console
+        })
+        .catch(error => {
+            console.error('Error fetching the data:', error);
+        });
     updateCollection();
 });
 
