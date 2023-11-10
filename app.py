@@ -1,4 +1,4 @@
-from flask import Flask,jsonify,request,render_template,redirect,url_for,session,abort
+from flask import Flask,jsonify,request,render_template,redirect,url_for,abort,session
 from flask_session import Session
 from flask_pymongo import PyMongo
 import pyrebase
@@ -21,13 +21,19 @@ firebase=pyrebase.initialize_app(firebase_config)
 auth=firebase.auth()
 
 app=Flask(__name__)
-app.config["SECRET_KEY"]="abcde"
-app.config["SESSION_TYPE"]="MONGODB"
+app.config['SECRET_KEY'] = '$wX2RjLzA3bTkH1iGfSg4MnC5QoDpUqV8xYvZ9sE6uF7tIyPwN'
+
+app.config["SESSION_TYPE"] = "mongodb"
+
+
 Session(app)
 mongo_uri="mongodb+srv://maitybristi53:SllXwJZSpfEqQcpm@cluster0.r0oeefw.mongodb.net/UserData?ssl=true"
 
 mongo=PyMongo(app,mongo_uri)
 db=mongo.db
+app.config["SESSION_MONGODB"] = mongo
+app.config["SESSION_MONGODB_DB"] = "UserSessions"
+app.config["SESSION_MONGODB_COLLECT"] = "sessions"
 
 
 def Register_user(name,email):
@@ -38,7 +44,7 @@ def Register_user(name,email):
 
 @app.get("/")
 def index():
-    return render_template('login.html')
+    return Home_page()
 
 
 
@@ -78,10 +84,10 @@ def login():
     data = request.get_json()
     email = data.get('mail', '').lower()
     password = data.get('password', '')  # Get the password from the request
-    print(email)
     try:
         user = auth.sign_in_with_email_and_password(email, password)
-        #session['email']=email
+        session['email']=email
+        print(session.get('email',''))
         return jsonify({'code': 200, 'message': 'Login Success'}), 200
         
     except Exception as e:
@@ -95,10 +101,19 @@ def login():
         error_message = ' '.join(error.get('message', 'Undefined').split('_'))
         return jsonify({'code': error.get('code', '400'), 'message':error_message}),  error.get('code', 400)
 
+@app.get('/logout')
+def logout():
+    session.pop('email','')
+    return jsonify({"message":"success"})
 
 @app.get('/home')
 def Home_page():
-    return render_template('index.html',user={})
+    if 'email' in session:
+        collection = db.Users
+        user = collection.find_one({'Email': session.get('email')})
+        return render_template('index.html', user=user)
+    else:
+        return render_template('login.html',user={})
 
 @app.get('/search')
 def get_search():

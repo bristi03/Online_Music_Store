@@ -13,6 +13,7 @@
     crossorigin="anonymous"
     />
     <script type="application/javascript" defer src="../static/js/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
@@ -82,7 +83,7 @@
             <div class="profile-dropdown">
               <div class="visible">
                 <img src="../static/images/user.png" alt="User" />
-                <span id="user">User</span>
+                <span id="user">Hello {{user.Name}}</span>
                 <i class="fas fa-sort-down arrow"></i>
               </div>
               <div class="hidden">
@@ -96,7 +97,7 @@
                     Upgrade to Premium
                     <i class="far fa-external-link-alt"></i>
                   </li>
-                  <li>Log out</li>
+                  <li onclick="confirm_logout()">Log out</li>
                 </ul>
               </div>
             </div>
