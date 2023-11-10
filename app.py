@@ -41,7 +41,7 @@ Session(app)
 
 def Register_user(name,email):
     collection=db.Users
-    data={'Email':email.lower(),'Name':name}
+    data={'Email':email.lower(),'Name':name,"IsAdmin":False}
     collection.insert_one(data)
     return True
 
@@ -121,6 +121,32 @@ def Home_page():
 @app.get('/search')
 def get_search():
     return render_template('search.html')
+
+@app.post('/like')
+def like():
+    data=request.get_json()
+    print(data)
+    email=session.get('email')
+    collection = db.Users
+    user = collection.find_one({'Email': session.get('email')})
+    fav = user["Favourites"]
+    song_name=data["name"]
+    if song_name in fav:
+        fav.remove(song_name)
+    else:
+        fav.append(song_name)
+    collection.update_one({'Email': email}, {
+        '$set': {'Favourites':fav }})
+    print(user)
+    return 'ok'
+
+@app.get('/get_favourites')
+def fav():
+    email=session.get('email')
+    collection = db.Users
+    user = collection.find_one({'Email': session.get('email')})
+    fav = user["Favourites"]
+    return jsonify({"favs":fav})
 
 if __name__=="__main__":
     app.run(port=8080)
