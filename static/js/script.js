@@ -170,6 +170,25 @@ const likeSong = (id, likeBtn, songName) => {
     //Check if the global song object is liked or not
     //if liked before, then unlike it, change color of like button
     //and remove that song from the liked songs collection.
+    console.log(songs[id]);
+    var data={
+        "name":songs[id].name,
+    }
+    $.ajax({
+        type: "POST",
+        url: "/like",
+        data: JSON.stringify(data),
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            console.log(response);
+        },
+        error: function (error) {
+            console.error(error);
+            alert(error.responseJSON.message);
+        }
+    });
+
     if(songs[id].liked){
         songs[id].liked = false;
         likeBtn.style.color = "grey";
@@ -298,6 +317,7 @@ const updateCollection = () => {
 //Once the document if fully loaded, call the update collection function
 //and add the functionlity to the Spotify Clone.
 document.addEventListener("DOMContentLoaded", async() => {
+    get_favourites();
     updateCollection();
 })
 
@@ -341,4 +361,22 @@ function confirm_logout(){
             }
         });
     }
+}
+
+
+function get_favourites(){
+    $.ajax({
+        type: "GET",
+        url: "/get_favourites",
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            console.log(response);
+            //TODO
+        },
+        error: function (error) {
+            console.error(error);
+            alert(error.responseJSON.message);
+        }
+    });
 }
