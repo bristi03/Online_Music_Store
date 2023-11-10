@@ -7,24 +7,33 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Spotify - Web Player</title>
         <link rel="icon" href="images/icon.png" />
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="../static/css/style.css">
         <link
         rel="stylesheet"
         href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
         crossorigin="anonymous"
         />
-        <script type="application/javascript" defer src="js/script.js"></script>
     
 </head>
 <body>
+    <!-- Body content -->
     <h1>Search Results</h1>
-    <form id="search-form" action="search-results.html" method="get">
-        <input type="text" id="search-input" name="q" placeholder="Search for songs or artists" />
-        <button type="submit">Search</button>
+    <form id="search-form">
+        <input type="text" id="search-input" placeholder="Search for songs or artists" />
+        <button id="searchBtn" type="button">Search</button>
     </form>
-    <div id="search-results">
+    <div id="search-output" class="card__collection_main">
         <!-- Display search results here -->
     </div>
+
+    <!-- Linking external JavaScript file -->
+    <script type="application/javascript" defer src="../static/js/script.js"></script>
 </body>
 </html>
+
+
+
+
+
+
