@@ -33,7 +33,7 @@
 
                     <div class="input-field" id="mailFld">
                         <i class="fa-solid fa-envelope"></i>
-                        <input type="email"  id="email" placeholder="Email">
+                        <input type="email"  id="email" placeholder="Email" required>
                     </div>
 
                     <div class="input-field">
@@ -43,7 +43,7 @@
 
                     <div class="input-field" id="confirmBtn">
                         <i class="fa-solid fa-lock"></i>
-                        <input type="password" id="signup-confirm-password" placeholder="Confirm Password">
+                        <input type="password" id="signup-confirm-password" placeholder="Confirm Password" required>
                     </div>
                     <p id="password-match-error" style="color: red; display: none;">Passwords do not match.</p>
                     <div class="btn-field" style="justify-content: center;">
@@ -66,7 +66,9 @@
 
             loginBtn.onclick = function(){
                 nameFld.style.maxHeight = "0";
+                document.getElementById("Username").required=false;
                 confirmBtn.style.maxHeight = "0";
+                document.getElementById("signup-confirm-password").required=false;
                 title.innerHTML= "Login";
                 loginBtn.classList.remove("disable");
                 signupBtn.classList.add("disable");
