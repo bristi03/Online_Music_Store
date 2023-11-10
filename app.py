@@ -125,7 +125,6 @@ def get_search():
 @app.post('/like')
 def like():
     data=request.get_json()
-    print(data)
     email=session.get('email')
     collection = db.Users
     user = collection.find_one({'Email': session.get('email')})
@@ -137,8 +136,7 @@ def like():
         fav.append(song_name)
     collection.update_one({'Email': email}, {
         '$set': {'Favourites':fav }})
-    print(user)
-    return 'ok'
+    return jsonify({"message":"success"}),200
 
 @app.get('/get_favourites')
 def fav():
