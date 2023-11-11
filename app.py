@@ -1,10 +1,15 @@
-from flask import Flask,jsonify,request,render_template,redirect,url_for,abort,session
+from flask import Flask, jsonify, request, render_template, Response, redirect, url_for, abort, session, send_file
 from flask_session import Session
 from flask_pymongo import PyMongo
 import pyrebase
 import json
 import pymongo
-
+from gridfs import GridFS
+from bson import ObjectId
+from mutagen.mp3 import MP3
+from datetime import timedelta
+from werkzeug.utils import secure_filename
+import os
 
 firebase_config = {
     'apiKey': "AIzaSyDVF0P5cuUU8lv2dNt-uc2_JyMOKTl8tBg",
@@ -29,14 +34,15 @@ mongo_uri="mongodb+srv://maitybristi53:SllXwJZSpfEqQcpm@cluster0.r0oeefw.mongodb
 
 mongo=PyMongo(app,mongo_uri,port=9999)
 db=mongo.db
-
+fs = GridFS(db)
 
 app.config["SESSION_MONGODB"] = pymongo.MongoClient(
     host="mongodb+srv://maitybristi53:SllXwJZSpfEqQcpm@cluster0.r0oeefw.mongodb.net/?ssl=true"
 )
 app.config["SESSION_MONGODB_DB"] = "UserSessions"
 app.config["SESSION_MONGODB_COLLECT"] = "sessions"
-
+app.config['SONG_UPLOAD_FOLDER'] = 'static/assets'
+app.config['IMG_UPLOAD_FOLDER'] = 'static/images'
 Session(app)
 
 def Register_user(name,email):
@@ -44,6 +50,76 @@ def Register_user(name,email):
     data={'Email':email.lower(),'Name':name,"IsAdmin":False}
     collection.insert_one(data)
     return True
+
+
+@app.route('/upload_song', methods=['POST'])
+def upload_song():
+    song_name = request.form['name']
+    artist_name = request.form['artist']
+    song_file = request.files['song']
+    image_file = request.files['image']
+
+    if song_name and artist_name and song_file and image_file:
+        # Save the audio file to the /static/assets folder
+        song_filename = secure_filename(song_file.filename)
+        song_path = os.path.join(app.config['SONG_UPLOAD_FOLDER'], song_filename)
+        song_file.save(song_path)
+
+        # Save the image file to the /static/assets folder
+        image_filename = secure_filename(image_file.filename)
+        image_path = os.path.join(app.config['IMG_UPLOAD_FOLDER'], image_filename)
+        image_file.save(image_path)
+
+        # Fetch audio duration using mutagen
+        audio = MP3(song_path)
+        duration = str(timedelta(seconds=int(audio.info.length)))
+
+        song_count = db['SongDetails'].count_documents({})
+        count = song_count
+
+        # Store the file paths in the database
+        song_details = {
+            'id': count,
+            'name': song_name,
+            'artist': artist_name,
+            'song_path': song_path,
+            'image_path': image_path,
+            'duration': duration  # Store the duration in H:M:S format
+        }
+
+        song_details_id = db['SongDetails'].insert_one(
+            song_details).inserted_id
+
+        return jsonify({'message': 'Song details uploaded successfully', 'song_details_id': str(song_details_id)}), 200
+
+    return jsonify({'message': 'Missing data or files for upload'}), 400
+
+
+@app.route('/get_songs', methods=['GET'])
+def get_songs():
+    # Retrieving all songs, excluding the _id field
+    songs = list(db['SongDetails'].find({}, {'_id': 0}))
+    return jsonify({'songs': songs}), 200
+
+
+@app.route('/get_song/<song_id>', methods=['GET'])
+def get_song(song_id):
+    # Retrieve the song file using its ID from GridFS
+    song_file = fs.get(ObjectId(song_id))
+    if song_file is not None:
+        return send_file(song_file, as_attachment=False,conditional=False, mimetype='audio/mpeg')
+    return jsonify({'message': 'Song not found'}), 404
+
+
+@app.route('/get_image/<image_id>', methods=['GET'])
+def get_image(image_id):
+    # Retrieve the image file using its ID from GridFS
+    image_file = fs.get(ObjectId(image_id))
+    if image_file is not None:
+        # Set the MIME type explicitly
+        return send_file(image_file, mimetype='application/octet-stream')
+    return jsonify({'message': 'Image not found'}), 404
+
 
 @app.get("/")
 def index():
@@ -140,7 +216,6 @@ def like():
 
 @app.get('/get_favourites')
 def fav():
-    email=session.get('email')
     collection = db.Users
     user = collection.find_one({'Email': session.get('email')})
     fav = user["Favourites"]

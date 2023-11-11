@@ -18,22 +18,13 @@ const currTime = document.getElementById("current-time");
 let cardCollection = document.querySelectorAll(".card__collection_main");
 let currentSong = new Audio();
 
+
 //Player is hidden by default and is visible only when a song is clicked.
 playerHead.style.display = "none";
 
 //Function to create card and add functionality to update player head.
 const createCard = (song) => {
-    //Takes in the song object as an argument.
-    /*
-    Create the Structure.
-    <div class="card">
-        <img src="./images/content/noctornal.jpg" alt="Noctornal">
-            <div class="card_info">
-                <p class="card_name">Noctornal</p>
-                <p class="card_artist">The Midnight</p>
-            </div>
-    </div>
-    */
+   
     const card = document.createElement("div");
     const img = document.createElement("img");
     const cardInfo = document.createElement("div");
@@ -49,7 +40,7 @@ const createCard = (song) => {
     //Adding the song details to the card.
     cardName.innerHTML = song.name;
     cardArtist.innerHTML = song.artist;
-    img.src = song.image;
+    img.src = song.image_path;
     img.alt = song.name;
 
     //Structuring the card
@@ -84,7 +75,6 @@ const playPauseFunc = (song) => {
         pauseBtn.style.display = "none"; 
     });
 
-    //When the play button is clicked, the song is played.
     playBtn.addEventListener("click", () => {
         song.play();
         playBtn.style.display = "none";
@@ -94,7 +84,7 @@ const playPauseFunc = (song) => {
     
 }
 
-const forwdBackwdFunc = ({name, artist, location, image, liked, id}) =>{
+const forwdBackwdFunc = ({ name, artist, location, image, liked, id, duration }) =>{
     forwardBtn.addEventListener('click', ()=> {
         if(id >= songs.length -1){
             id =0;
@@ -204,12 +194,12 @@ const formatTime =(time) =>{
 }
 
 //update the player head whenever a new song is clicked. 
-const updatePlayer = ({name, artist, location, image, liked, id}) => {
+const updatePlayer = ({ name, artist, song_path, image_path, id, duration }) => {
     //The arugument of the function is a song object
     //We are destructuing it in the arguments directly and using it.
 
     //Setting the new song for the global song object.
-    currentSong.setAttribute("src", location);
+    currentSong.setAttribute("src", song_path);
 
     //Getting the required elements from the player head.
     const songContainer = document.querySelector(".song");
@@ -228,12 +218,13 @@ const updatePlayer = ({name, artist, location, image, liked, id}) => {
     //Adding the selected song details in the player head.
     songContainer.innerHTML = name;
     artistContainer.innerHTML = artist;
-    artistImage.src = image;
+    artistImage.src =image_path;
     
     //Assign the id of the song to the button,
     //Check is song is liked and add the color based on song.liked.
     likeBtn.id = id;
     likeBtn.style.color = "grey";
+    var liked=false;
     if(liked){
         likeBtn.style.color = "red";
     }
@@ -246,9 +237,10 @@ const updatePlayer = ({name, artist, location, image, liked, id}) => {
     //When the current song is loaded, set it's duration and add it 
     //to the end time element.
     currentSong.onloadedmetadata = () => {
-        endTime.innerHTML = formatTime(currentSong.duration);
+        endTime.innerHTML = duration;
 
     }
+    console.log(currentSong);
     currentSong.play();
     playBtn.style.display = "none";
     pauseBtn.style.display = "inline";
@@ -297,30 +289,23 @@ const updateCollection = () => {
 
 //Once the document if fully loaded, call the update collection function
 //and add the functionlity to the Spotify Clone.
-document.addEventListener("DOMContentLoaded", async() => {
-    get_favourites();
-    updateCollection();
-})
-
-let searchinp = document.getElementById("search-input");
-let searchoup = document.getElementById("search-output");
-
 
 // Once the document if fully loaded, call the update collection function
 // and add the functionality to the Spotify Clone.
 document.addEventListener("DOMContentLoaded", async () => {
-    await fetch('/static/data/data.json') // Update the path accordingly
+    await fetch('/get_songs') // Update the path accordingly
         .then(response => response.json())
         .then(data => {
             // Destructure the 'songs' array from the data
-            songs  = data.songs;
-
+            
+            songs=data.songs;
             // Use the 'songs' variable here or perform any operations needed
             console.log(songs); // Just an example to display the 'songs' array in the console
         })
         .catch(error => {
             console.error('Error fetching the data:', error);
         });
+    get_favourites();
     updateCollection();
 });
 
@@ -361,3 +346,35 @@ function get_favourites(){
         }
     });
 }
+function addSong() {
+    const songName = document.getElementById('songName').value;
+    const artistName = document.getElementById('artistName').value;
+    const songFile = document.getElementById('songFile').files[0];
+    const imageFile = document.getElementById('imageFile').files[0];
+
+    const formData = new FormData();
+    formData.append('name', songName);
+    formData.append('artist', artistName);
+    formData.append('song', songFile);
+    formData.append('image', imageFile);
+    closeModal();
+    fetch('/upload_song', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Network response was not ok.');
+        })
+        .then(data => {
+            console.log('Song details uploaded:', data);
+            location.reload();
+            // Handle success response here
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+}
+

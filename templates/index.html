@@ -6,6 +6,7 @@
     <title>Spotify - Web Player</title>
     <link rel="icon" href="static/images/icon.png" />
     <link rel="stylesheet" href="../static/css/style.css">
+
     <link
     rel="stylesheet"
     href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
@@ -14,6 +15,21 @@
     />
     <script type="application/javascript" defer src="../static/js/script.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      /* Your existing CSS styles */
+      /* Add any additional styles for the modal here */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fafae8;
+        padding: 20px;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+    </style>
 </head>
 <body>
 
@@ -63,6 +79,13 @@
               <a href="#" id="download__link">
                   <i class="fas fa-arrow-circle-down"></i> Install App
               </a>
+                
+          </div>
+          <div class="download__item">
+            <a href="#" id="Add_song" onclick="openModal()">
+              <i class="fas fa-cloud-upload"></i> Add Song
+            </a>
+          
           </div>
     </div>
   </div>
@@ -227,5 +250,68 @@
       <hr class="speaker_line"/>
     </div>
   </div>
+
+<div id="modal-container">
+  <div class="modal" id="addSongModal">
+    <h2>Add New Song</h2>
+    <div id="addSongModalbody">
+    <label for="songName">Song Name:</label>
+    <input type="text" id="songName" placeholder="Enter song name"><br><br>
+
+    <label for="artistName">Artist Name:</label>
+    <input type="text" id="artistName" placeholder="Enter artist name"><br><br>
+
+    <label for="songFile">Upload Song (MP3):</label>
+    <input type="file" id="songFile" accept=".mp3"><br><br>
+
+    <label for="imageFile">Upload Image:</label>
+    <input type="file" id="imageFile" accept="image/*"><br><br>
+
+    <button onclick="addSong()">Submit</button>
+    <button onclick="closeModal()">Close</button>
+</div>
+
+  </div>
+</div>
+
+<script>
+  // Function to display the modal
+  function openModal() {
+    document.getElementById('addSongModal').style.display = 'block';
+  }
+
+  // Function to close the modal
+  function closeModal() {
+      // Hide the modal
+      document.getElementById('addSongModal').style.display = 'none';
+
+      // Clear input values in the modal
+      const inputs = document.querySelectorAll('#addSongModal input');
+      inputs.forEach(input => {
+        input.value = '';
+      });
+    }
+
+
+  // Function to add the song (to be customized based on your needs)
+  function addSong() {
+    // Retrieve the input values
+    const songName = document.getElementById('songName').value;
+    const artistName = document.getElementById('artistName').value;
+    const songFile = document.getElementById('songFile').files[0];
+    const imageFile = document.getElementById('imageFile').files[0];
+
+    // Handle the uploaded files here (e.g., send them to the server using Fetch API)
+
+    // For demo purposes, log the retrieved values
+    console.log('Song Name: ', songName);
+    console.log('Artist Name: ', artistName);
+    console.log('Song File: ', songFile);
+    console.log('Image File: ', imageFile);
+
+    // Close the modal after handling the data
+    closeModal();
+  }
+</script>
 </body>
 </html>

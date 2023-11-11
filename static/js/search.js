@@ -1,4 +1,9 @@
 // Function to update the search results in the search-output div
+
+let searchinp = document.getElementById("search-input");
+let searchoup = document.getElementById("search-output");
+
+
 const updateSearchResults = (searchResults) => {
     searchoup.innerHTML = "";
 
