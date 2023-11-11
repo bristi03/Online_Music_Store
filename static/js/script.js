@@ -67,6 +67,7 @@ const playPauseFunc = (song) => {
     forwardBtn = document.getElementById("forward-btn");
     backwardBtn = document.getElementById("backward-btn");
     repeatBtn = document.getElementById("repeat-btn");
+    shuffleBtn = document.getElementById("shuffle-btn")
     
     //When the pause button is clicked, the song is paused.
     pauseBtn.addEventListener("click", () => {
@@ -89,27 +90,42 @@ const forwdBackwdFunc = ({ name, artist, location, image, liked, id, duration })
         if(id >= songs.length -1){
             id =0;
         }
-        else{
-            id++;
-        }
-        currentSong = updatePlayer(songs[id]);
-    })
+        currentSong = updatePlayer(songs[currentSongId]);
+    });
 
-    backwardBtn.addEventListener('click', ()=> {
-        if(id == 0){
-            id =songs.length -1;
+    backwardBtn.addEventListener('click', () => {
+        if (id == 0) {
+            currentSongId = songs.length - 1;
+        } else {
+            currentSongId = id - 1;
         }
-        else{
-            id--;
-        }
-        currentSong = updatePlayer(songs[id]);
-    })
+        currentSong = updatePlayer(songs[currentSongId]);
+    });
 
-    repeatBtn.addEventListener('click', ()=> {
-       
-        currentSong = updatePlayer(songs[id]);
-    })
-}
+    repeatBtn.addEventListener('click', () => {
+        currentSong = updatePlayer(songs[currentSongId]);
+    });
+
+    shuffleBtn.addEventListener('click', () => {
+        let randomIndex;
+        do {
+            randomIndex = Math.floor(Math.random() * songs.length);
+        } while (randomIndex === currentSongId);
+
+        currentSongId = randomIndex;
+        currentSong = updatePlayer(songs[currentSongId]);
+    });
+
+let volumeBar = document.getElementById("volume-bar");
+
+currentSong.volume = 1;
+
+// Add an event listener to update the volume when the volume bar changes
+volumeBar.addEventListener("input", () => {
+    currentSong.volume = volumeBar.value;
+});
+
+};
 
 const setMusic =(i) => {
     seekBar.value = 0;

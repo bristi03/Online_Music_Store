@@ -229,7 +229,7 @@
     </div>
     <div id="player__controls">
       <div id="controls">
-        <i class="fas fa-random btn"  title="Enable Shuffle"></i>
+        <i class="fas fa-random btn"  id="shuffle-btn" title="Enable Shuffle"></i>
         <i class="fas fa-step-backward btn" id="backward-btn" title="Previous"></i>
         <i class="fas fa-play-circle btn" id="playBtn" title="Play" style="display: inline-block; font-size: 1.3rem;"></i>
         <i class="fas fa-pause-circle btn" id="pauseBtn" title="Pause" style="display: inline-block; font-size: 1.3rem;"></i>
@@ -247,7 +247,7 @@
       <i class="fas fa-list" title="Queue"></i>
       <i class="fas fa-desktop" title="Connect to a Device"></i>
       <i class="fas fa-volume-up" title="Volume"></i>
-      <hr class="speaker_line"/>
+      <input type="range" class="player_line" id="volume-bar" min="0" max="1" step="0.1" value="1">
     </div>
   </div>
 
