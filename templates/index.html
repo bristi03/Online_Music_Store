@@ -81,11 +81,12 @@
               </a>
                 
           </div>
+          {% if user.IsAdmin %}
           <div class="download__item">
             <a href="#" id="Add_song" onclick="openModal()">
               <i class="fas fa-cloud-upload"></i> Add Song
             </a>
-          
+          {% endif %}
           </div>
     </div>
   </div>

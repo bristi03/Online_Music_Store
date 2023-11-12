@@ -98,7 +98,16 @@ def upload_song():
 @app.route('/get_songs', methods=['GET'])
 def get_songs():
     # Retrieving all songs, excluding the _id field
+    email=session.get('email')
+    favs = db.Users.find_one({'Email': email})["Favourites"]
+    print(favs)
     songs = list(db['SongDetails'].find({}, {'_id': 0}))
+    for i in range(len(songs)):
+        song=songs[i]
+        if str(song['id']) in favs:
+            song['liked']=True
+        else:
+            song['liked']=False
     return jsonify({'songs': songs}), 200
 
 
@@ -205,7 +214,7 @@ def like():
     collection = db.Users
     user = collection.find_one({'Email': session.get('email')})
     fav = user["Favourites"]
-    song_name=data["name"]
+    song_name=data["id"]
     if song_name in fav:
         fav.remove(song_name)
     else:

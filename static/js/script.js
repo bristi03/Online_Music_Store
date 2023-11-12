@@ -13,11 +13,12 @@ let seekBar = document.querySelector("#seek-bar");
 let forwardBtn = document.getElementById("forward-btn");
 let backwardBtn = document.getElementById("backward-btn");
 let repeatBtn = document.getElementById("repeat-btn");
+let shuffleBtn = document.getElementById("shuffle-btn");
 let durationTime = document.querySelector(".duration-time");
 const currTime = document.getElementById("current-time");
 let cardCollection = document.querySelectorAll(".card__collection_main");
 let currentSong = new Audio();
-
+var currentSongId = 0;
 
 //Player is hidden by default and is visible only when a song is clicked.
 playerHead.style.display = "none";
@@ -52,9 +53,9 @@ const createCard = (song) => {
         playerHead.style.display = "flex";
         currentSong = updatePlayer(song);
         playPauseFunc(currentSong);
-        forwdBackwdFunc(song)
+        forwdBackwdFunc();
     }
-
+    
     //Return the dynamic card element.
     return card;
 }
@@ -67,7 +68,6 @@ const playPauseFunc = (song) => {
     forwardBtn = document.getElementById("forward-btn");
     backwardBtn = document.getElementById("backward-btn");
     repeatBtn = document.getElementById("repeat-btn");
-    shuffleBtn = document.getElementById("shuffle-btn")
     
     //When the pause button is clicked, the song is paused.
     pauseBtn.addEventListener("click", () => {
@@ -85,22 +85,26 @@ const playPauseFunc = (song) => {
     
 }
 
-const forwdBackwdFunc = ({ name, artist, location, image, liked, id, duration }) =>{
+const forwdBackwdFunc = () =>{
+   
     forwardBtn.addEventListener('click', ()=> {
-        if(id >= songs.length -1){
-            id =0;
+        if(currentSongId+1>= songs.length){
+            currentSongId=0;
+        }else{
+            currentSongId+=1;
         }
         currentSong = updatePlayer(songs[currentSongId]);
     });
 
     backwardBtn.addEventListener('click', () => {
-        if (id == 0) {
+        if (currentSongId-1<0) {
             currentSongId = songs.length - 1;
         } else {
-            currentSongId = id - 1;
+            currentSongId -=1;
         }
         currentSong = updatePlayer(songs[currentSongId]);
     });
+
 
     repeatBtn.addEventListener('click', () => {
         currentSong = updatePlayer(songs[currentSongId]);
@@ -159,7 +163,7 @@ const likeSong = (id, likeBtn, songName) => {
     //and remove that song from the liked songs collection.
     console.log(songs[id]);
     var data={
-        "name":songs[id].name,
+        "id":id,
     }
     $.ajax({
         type: "POST",
@@ -194,7 +198,7 @@ const likeSong = (id, likeBtn, songName) => {
         likeBtn.style.color = "red";
         cardCollection[0].append(createCard(songs[id]));
     }
-    updateStorage();
+    //updateStorage();
 }
 
 const formatTime =(time) =>{
@@ -210,9 +214,10 @@ const formatTime =(time) =>{
 }
 
 //update the player head whenever a new song is clicked. 
-const updatePlayer = ({ name, artist, song_path, image_path, id, duration }) => {
+const updatePlayer = ({ name, artist, song_path, image_path, id, duration,liked }) => {
     //The arugument of the function is a song object
     //We are destructuing it in the arguments directly and using it.
+    console.log(id);
 
     //Setting the new song for the global song object.
     currentSong.setAttribute("src", song_path);
@@ -240,7 +245,7 @@ const updatePlayer = ({ name, artist, song_path, image_path, id, duration }) => 
     //Check is song is liked and add the color based on song.liked.
     likeBtn.id = id;
     likeBtn.style.color = "grey";
-    var liked=false;
+    
     if(liked){
         likeBtn.style.color = "red";
     }
