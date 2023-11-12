@@ -473,6 +473,7 @@ const displayAllSongs = () => {
 
 // Event listener for the search button
 const search= () => {
+    event.preventDefault();
     const searchTerm = $('#search-input').val().trim().toLowerCase();
 
     if (searchTerm !== "") {
