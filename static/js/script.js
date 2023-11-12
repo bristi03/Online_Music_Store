@@ -306,8 +306,6 @@ const updateCollection = () => {
     })
 }
 
-//Once the document if fully loaded, call the update collection function
-//and add the functionlity to the Spotify Clone.
 
 // Once the document if fully loaded, call the update collection function
 // and add the functionality to the Spotify Clone.

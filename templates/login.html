@@ -11,7 +11,7 @@
 
 </head>
 <body>
-    
+    <div class="bg"></div>
     <div class="container">
         <div class="heading" >
             <h1>Music For Everyone</h1>
@@ -46,6 +46,7 @@
                         <input type="password" id="signup-confirm-password" placeholder="Confirm Password" required>
                     </div>
                     <p id="password-match-error" style="color: red; display: none;">Passwords do not match.</p>
+                    <p id="forgot-password" style="color: rgb(250, 249, 249); display: none;">Forgot Password?</p>
                     <div class="btn-field" style="justify-content: center;">
                         <button type="submit" id="submit-button">Submit</button>
                     </div>
@@ -61,7 +62,7 @@
             let title = document.getElementById("title");
             let confirmBtn= document.getElementById("confirmBtn");
             let nameFld = document.getElementById("Namefld");
-
+            let forgotpass = document.getElementById("forgot-password")
             let passwordMatchError = document.getElementById("password-match-error");
 
             loginBtn.onclick = function(){
@@ -72,6 +73,7 @@
                 title.innerHTML= "Login";
                 loginBtn.classList.remove("disable");
                 signupBtn.classList.add("disable");
+                forgotpass.style.display= "block";
                 
             }
 
