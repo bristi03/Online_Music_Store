@@ -72,7 +72,7 @@ def upload_song():
 
         # Fetch audio duration using mutagen
         audio = MP3(song_path)
-        duration = str(timedelta(seconds=int(audio.info.length)))
+        duration = str(timedelta(seconds=int(audio.info.length)))[2:]
 
         song_count = db['SongDetails'].count_documents({})
         count = song_count
