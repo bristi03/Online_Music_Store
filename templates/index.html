@@ -81,11 +81,12 @@
               </a>
                 
           </div>
+          {% if user.IsAdmin %}
           <div class="download__item">
             <a href="#" id="Add_song" onclick="openModal()">
               <i class="fas fa-cloud-upload"></i> Add Song
             </a>
-          
+          {% endif %}
           </div>
     </div>
   </div>
@@ -238,7 +239,7 @@
       <i class="fas fa-music" title="Lyrics"></i>
       <i class="fas fa-list" title="Queue"></i>
       <i class="fas fa-desktop" title="Connect to a Device"></i>
-      <i class="fas fa-volume-up" title="Volume"></i>
+      <i class="fas fa-volume-up" id="mute" title="Volume" onclick="mute_unmute()"></i>
       <input type="range" class="player_line" id="volume-bar" min="0" max="1" step="0.1" value="1">
     </div>
   </div>

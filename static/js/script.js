@@ -13,15 +13,35 @@ let seekBar = document.querySelector("#seek-bar");
 let forwardBtn = document.getElementById("forward-btn");
 let backwardBtn = document.getElementById("backward-btn");
 let repeatBtn = document.getElementById("repeat-btn");
+let shuffleBtn = document.getElementById("shuffle-btn");
 let durationTime = document.querySelector(".duration-time");
 const currTime = document.getElementById("current-time");
 let cardCollection = document.querySelectorAll(".card__collection_main");
 let currentSong = new Audio();
-
-
+var currentSongId = 0;
+var locked=false;
+var randomized=false;
 //Player is hidden by default and is visible only when a song is clicked.
 playerHead.style.display = "none";
 
+
+function mute_unmute(){
+    if(currentSong.volume!=0){
+        currentSong.pause();
+        playBtn.style.display = "inline";
+        pauseBtn.style.display = "none"; 
+        currentSong.volume=0;
+        document.getElementById("volume-bar").value=0;
+        document.getElementById("mute").className = "fas fa-volume-down";
+    }else{
+        currentSong.volume=1;
+        document.getElementById("volume-bar").value = 1;
+        document.getElementById("mute").className = "fas fa-volume-up";
+        currentSong.play();
+        playBtn.style.display = "none"; 
+        pauseBtn.style.display = "inline";
+    }
+}
 //Function to create card and add functionality to update player head.
 const createCard = (song) => {
    
@@ -52,9 +72,9 @@ const createCard = (song) => {
         playerHead.style.display = "flex";
         currentSong = updatePlayer(song);
         playPauseFunc(currentSong);
-        forwdBackwdFunc(song)
+        forwdBackwdFunc();
     }
-
+    
     //Return the dynamic card element.
     return card;
 }
@@ -67,7 +87,6 @@ const playPauseFunc = (song) => {
     forwardBtn = document.getElementById("forward-btn");
     backwardBtn = document.getElementById("backward-btn");
     repeatBtn = document.getElementById("repeat-btn");
-    shuffleBtn = document.getElementById("shuffle-btn")
     
     //When the pause button is clicked, the song is paused.
     pauseBtn.addEventListener("click", () => {
@@ -85,14 +104,15 @@ const playPauseFunc = (song) => {
     
 }
 
-const forwdBackwdFunc = ({ name, artist, location, image, liked, id, duration }) =>{
-    let currentSongId=id;
+const forwdBackwdFunc = () =>{
+
     forwardBtn.addEventListener('click', ()=> {
-        if(currentSongId >= songs.length -1){
-            currentSongId =0;
-        } else{
-            currentSongId++;
+        if (currentSongId + 1 >= songs.length) {
+            currentSongId = 0;
+        } else {
+            currentSongId += 1;
         }
+        
         currentSong = updatePlayer(songs[currentSongId]);
     });
 
@@ -100,16 +120,23 @@ const forwdBackwdFunc = ({ name, artist, location, image, liked, id, duration })
         if (currentSongId == 0) {
             currentSongId = songs.length - 1;
         } else {
-            currentSongId = currentSongId-1;
+            currentSongId -= 1;
         }
         currentSong = updatePlayer(songs[currentSongId]);
     });
 
+
     repeatBtn.addEventListener('click', () => {
-        currentSong = updatePlayer(songs[currentSongId]);
+        locked=!locked;
+        if (repeatBtn.style.color == "white"){
+            repeatBtn.style.color="rgb(82,82,82)";
+        }else{
+            repeatBtn.style.color = "white";
+        }
     });
 
     shuffleBtn.addEventListener('click', () => {
+        randomized=!randomized;
         let randomIndex;
         do {
             randomIndex = Math.floor(Math.random() * songs.length);
@@ -117,6 +144,11 @@ const forwdBackwdFunc = ({ name, artist, location, image, liked, id, duration })
 
         currentSongId = randomIndex;
         currentSong = updatePlayer(songs[currentSongId]);
+        if (shuffleBtn.style.color == "white") {
+            shuffleBtn.style.color = "rgb(82,82,82)";
+        } else {
+            shuffleBtn.style.color = "white";
+        }
     });
 
 let volumeBar = document.getElementById("volume-bar");
@@ -162,7 +194,7 @@ const likeSong = (id, likeBtn, songName) => {
     //and remove that song from the liked songs collection.
     console.log(songs[id]);
     var data={
-        "name":songs[id].name,
+        "id":id,
     }
     $.ajax({
         type: "POST",
@@ -197,7 +229,7 @@ const likeSong = (id, likeBtn, songName) => {
         likeBtn.style.color = "red";
         cardCollection[0].append(createCard(songs[id]));
     }
-    updateStorage();
+    //updateStorage();
 }
 
 const formatTime =(time) =>{
@@ -212,10 +244,30 @@ const formatTime =(time) =>{
     return `${min} : ${sec}`;
 }
 
+function playNextSong(){
+    if(locked){
+       currentSong= updatePlayer(songs[currentSongId]);
+    }else if(randomized){
+        var randomIndex ;
+        do {
+            randomIndex = Math.floor(Math.random() * songs.length);
+        } while (randomIndex === currentSongId);
+        currentSong=updatePlayer(songs[randomIndex]);
+    }else{
+        if (currentSongId + 1 >= songs.length) {
+            currentSongId = 0;
+        } else {
+            currentSongId += 1;
+        }
+        currentSong = updatePlayer(songs[currentSongId]);
+    }
+}
+
 //update the player head whenever a new song is clicked. 
-const updatePlayer = ({ name, artist, song_path, image_path, id, duration }) => {
+const updatePlayer = ({ name, artist, song_path, image_path, id, duration,liked }) => {
     //The arugument of the function is a song object
     //We are destructuing it in the arguments directly and using it.
+    console.log(id);
 
     //Setting the new song for the global song object.
     currentSong.setAttribute("src", song_path);
@@ -243,7 +295,7 @@ const updatePlayer = ({ name, artist, song_path, image_path, id, duration }) => 
     //Check is song is liked and add the color based on song.liked.
     likeBtn.id = id;
     likeBtn.style.color = "grey";
-    var liked=false;
+    
     if(liked){
         likeBtn.style.color = "red";
     }
@@ -259,7 +311,6 @@ const updatePlayer = ({ name, artist, song_path, image_path, id, duration }) => 
         endTime.innerHTML = duration;
 
     }
-    console.log(currentSong);
     currentSong.play();
     playBtn.style.display = "none";
     pauseBtn.style.display = "inline";
@@ -271,10 +322,14 @@ setInterval(()=>{
     seekBar.value = currentSong.currentTime;
     seekBar.max = currentSong.duration;
     currTime.innerHTML= formatTime(currentSong.currentTime);
+    if (currentSong.duration == currentSong.currentTime) {
+        playNextSong();
+    }
 },500)
 
 seekBar.addEventListener('change',()=>{
     currentSong.currentTime = seekBar.value;
+    
 })
 
 //main function that calls all other functions.
@@ -322,7 +377,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         .catch(error => {
             console.error('Error fetching the data:', error);
         });
-    get_favourites();
     updateCollection();
 });
 
@@ -347,22 +401,6 @@ function confirm_logout(){
 }
 
 
-function get_favourites(){
-    $.ajax({
-        type: "GET",
-        url: "/get_favourites",
-        contentType: "application/json;charset=utf-8",
-        dataType: "json",
-        success: function (response) {
-            console.log(response);
-            //TODO
-        },
-        error: function (error) {
-            console.error(error);
-            alert(error.responseJSON.message);
-        }
-    });
-}
 function addSong() {
     const songName = document.getElementById('songName').value;
     const artistName = document.getElementById('artistName').value;
