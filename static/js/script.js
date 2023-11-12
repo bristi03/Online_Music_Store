@@ -24,6 +24,24 @@ var randomized=false;
 //Player is hidden by default and is visible only when a song is clicked.
 playerHead.style.display = "none";
 
+
+function mute_unmute(){
+    if(currentSong.volume!=0){
+        currentSong.pause();
+        playBtn.style.display = "inline";
+        pauseBtn.style.display = "none"; 
+        currentSong.volume=0;
+        document.getElementById("volume-bar").value=0;
+        document.getElementById("mute").className = "fas fa-volume-down";
+    }else{
+        currentSong.volume=1;
+        document.getElementById("volume-bar").value = 1;
+        document.getElementById("mute").className = "fas fa-volume-up";
+        currentSong.play();
+        playBtn.style.display = "none"; 
+        pauseBtn.style.display = "inline";
+    }
+}
 //Function to create card and add functionality to update player head.
 const createCard = (song) => {
    
