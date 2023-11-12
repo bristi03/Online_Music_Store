@@ -19,7 +19,8 @@ const currTime = document.getElementById("current-time");
 let cardCollection = document.querySelectorAll(".card__collection_main");
 let currentSong = new Audio();
 var currentSongId = 0;
-
+var locked=false;
+var randomized=false;
 //Player is hidden by default and is visible only when a song is clicked.
 playerHead.style.display = "none";
 
@@ -86,13 +87,14 @@ const playPauseFunc = (song) => {
 }
 
 const forwdBackwdFunc = () =>{
-   
+
     forwardBtn.addEventListener('click', ()=> {
-        if(currentSongId+1 >= songs.length ){
-            id =0;
-        }else{
-            currentSongId+=1;
+        if (currentSongId + 1 >= songs.length) {
+            currentSongId = 0;
+        } else {
+            currentSongId += 1;
         }
+        
         currentSong = updatePlayer(songs[currentSongId]);
     });
 
@@ -100,17 +102,23 @@ const forwdBackwdFunc = () =>{
         if (currentSongId == 0) {
             currentSongId = songs.length - 1;
         } else {
-            currentSongId -=1;
+            currentSongId -= 1;
         }
         currentSong = updatePlayer(songs[currentSongId]);
     });
 
 
     repeatBtn.addEventListener('click', () => {
-        currentSong = updatePlayer(songs[currentSongId]);
+        locked=!locked;
+        if (repeatBtn.style.color == "white"){
+            repeatBtn.style.color="rgb(82,82,82)";
+        }else{
+            repeatBtn.style.color = "white";
+        }
     });
 
     shuffleBtn.addEventListener('click', () => {
+        randomized=!randomized;
         let randomIndex;
         do {
             randomIndex = Math.floor(Math.random() * songs.length);
@@ -118,6 +126,11 @@ const forwdBackwdFunc = () =>{
 
         currentSongId = randomIndex;
         currentSong = updatePlayer(songs[currentSongId]);
+        if (shuffleBtn.style.color == "white") {
+            shuffleBtn.style.color = "rgb(82,82,82)";
+        } else {
+            shuffleBtn.style.color = "white";
+        }
     });
 
 let volumeBar = document.getElementById("volume-bar");
@@ -213,6 +226,25 @@ const formatTime =(time) =>{
     return `${min} : ${sec}`;
 }
 
+function playNextSong(){
+    if(locked){
+       currentSong= updatePlayer(songs[currentSongId]);
+    }else if(randomized){
+        var randomIndex ;
+        do {
+            randomIndex = Math.floor(Math.random() * songs.length);
+        } while (randomIndex === currentSongId);
+        currentSong=updatePlayer(songs[randomIndex]);
+    }else{
+        if (currentSongId + 1 >= songs.length) {
+            currentSongId = 0;
+        } else {
+            currentSongId += 1;
+        }
+        currentSong = updatePlayer(songs[currentSongId]);
+    }
+}
+
 //update the player head whenever a new song is clicked. 
 const updatePlayer = ({ name, artist, song_path, image_path, id, duration,liked }) => {
     //The arugument of the function is a song object
@@ -261,7 +293,6 @@ const updatePlayer = ({ name, artist, song_path, image_path, id, duration,liked 
         endTime.innerHTML = duration;
 
     }
-    console.log(currentSong);
     currentSong.play();
     playBtn.style.display = "none";
     pauseBtn.style.display = "inline";
@@ -273,10 +304,14 @@ setInterval(()=>{
     seekBar.value = currentSong.currentTime;
     seekBar.max = currentSong.duration;
     currTime.innerHTML= formatTime(currentSong.currentTime);
+    if (currentSong.duration == currentSong.currentTime) {
+        playNextSong();
+    }
 },500)
 
 seekBar.addEventListener('change',()=>{
     currentSong.currentTime = seekBar.value;
+    
 })
 
 //main function that calls all other functions.
@@ -326,7 +361,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         .catch(error => {
             console.error('Error fetching the data:', error);
         });
-    get_favourites();
     updateCollection();
 });
 
@@ -351,22 +385,6 @@ function confirm_logout(){
 }
 
 
-function get_favourites(){
-    $.ajax({
-        type: "GET",
-        url: "/get_favourites",
-        contentType: "application/json;charset=utf-8",
-        dataType: "json",
-        success: function (response) {
-            console.log(response);
-            //TODO
-        },
-        error: function (error) {
-            console.error(error);
-            alert(error.responseJSON.message);
-        }
-    });
-}
 function addSong() {
     const songName = document.getElementById('songName').value;
     const artistName = document.getElementById('artistName').value;
