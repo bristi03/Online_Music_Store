@@ -88,19 +88,17 @@ const playPauseFunc = (song) => {
 const forwdBackwdFunc = () =>{
    
     forwardBtn.addEventListener('click', ()=> {
-        if(currentSongId+1>= songs.length){
-            currentSongId=0;
-        }else{
-            currentSongId+=1;
+        if(id >= songs.length -1){
+            id =0;
         }
         currentSong = updatePlayer(songs[currentSongId]);
     });
 
     backwardBtn.addEventListener('click', () => {
-        if (currentSongId-1<0) {
+        if (id == 0) {
             currentSongId = songs.length - 1;
         } else {
-            currentSongId -=1;
+            currentSongId = id - 1;
         }
         currentSong = updatePlayer(songs[currentSongId]);
     });
