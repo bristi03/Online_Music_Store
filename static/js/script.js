@@ -72,6 +72,7 @@ const createCard = (song) => {
     card.onclick = function(){
         playerHead.style.display = "flex";
         currentSong = updatePlayer(song);
+        currentSongId=song.id;
         playPauseFunc(currentSong);
         forwdBackwdFunc();
     }
