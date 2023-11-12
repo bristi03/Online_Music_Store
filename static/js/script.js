@@ -129,23 +129,24 @@ const forwdBackwdFunc = () =>{
 
 
     repeatBtn.addEventListener('click', () => {
+        if (randomized) {
+            shuffleBtn.click();
+        }
         locked=!locked;
         if (repeatBtn.style.color == "white"){
             repeatBtn.style.color="rgb(82,82,82)";
         }else{
             repeatBtn.style.color = "white";
         }
+        
     });
 
     shuffleBtn.addEventListener('click', () => {
-        randomized=!randomized;
-        let randomIndex;
-        do {
-            randomIndex = Math.floor(Math.random() * songs.length);
-        } while (randomIndex === currentSongId);
-
-        currentSongId = randomIndex;
-        currentSong = updatePlayer(songs[currentSongId]);
+        
+        if(locked){
+            repeatBtn.click();
+        }
+        randomized = !randomized;
         if (shuffleBtn.style.color == "white") {
             shuffleBtn.style.color = "rgb(82,82,82)";
         } else {
@@ -254,6 +255,7 @@ function playNextSong(){
         do {
             randomIndex = Math.floor(Math.random() * songs.length);
         } while (randomIndex === currentSongId);
+        currentSongId=randomIndex;
         currentSong=updatePlayer(songs[randomIndex]);
     }else{
         if (currentSongId + 1 >= songs.length) {
