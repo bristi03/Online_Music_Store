@@ -56,10 +56,11 @@ def Register_user(name,email):
 def upload_song():
     song_name = request.form['name']
     artist_name = request.form['artist']
+    category = request.form['category']
     song_file = request.files['song']
     image_file = request.files['image']
 
-    if song_name and artist_name and song_file and image_file:
+    if song_name and artist_name and  category and song_file and image_file:
         # Save the audio file to the /static/assets folder
         song_filename = secure_filename(song_file.filename)
         song_path = os.path.join(app.config['SONG_UPLOAD_FOLDER'], song_filename)
@@ -82,6 +83,7 @@ def upload_song():
             'id': count,
             'name': song_name,
             'artist': artist_name,
+            'category': category,
             'song_path': song_path,
             'image_path': image_path,
             'duration': duration  # Store the duration in H:M:S format

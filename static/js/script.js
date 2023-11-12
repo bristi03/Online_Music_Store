@@ -411,12 +411,14 @@ function confirm_logout(){
 function addSong() {
     const songName = document.getElementById('songName').value;
     const artistName = document.getElementById('artistName').value;
+    const category = document.getElementById('category').value;
     const songFile = document.getElementById('songFile').files[0];
     const imageFile = document.getElementById('imageFile').files[0];
 
     const formData = new FormData();
     formData.append('name', songName);
     formData.append('artist', artistName);
+    formData.append('category',category);
     formData.append('song', songFile);
     formData.append('image', imageFile);
     closeModal();

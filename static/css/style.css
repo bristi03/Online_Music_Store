@@ -431,6 +431,10 @@ nav {
 .card_name{
   font-weight: bold;
   font-size: large;
+  color: #fff;
+}
+.card_artist{
+  color: #fff;
 }
 
 .card_top > * {
