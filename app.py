@@ -99,7 +99,7 @@ def upload_song():
 def get_songs():
     # Retrieving all songs, excluding the _id field
     email=session.get('email')
-    user= db.Users.find_one({'Email': email})["Favourites"]
+    user= db.Users.find_one({'Email': email})
     if "Favourites" in user:
         favs = user["Favourites"]
     else:
