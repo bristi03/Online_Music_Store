@@ -543,7 +543,7 @@ function Reset_all() {
     // Get the parent element
     event.preventDefault();
     var parent = document.getElementById('search-output');
-
+    $('#search-input').val('');
     // Remove all children
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
