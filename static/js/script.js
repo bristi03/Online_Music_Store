@@ -624,7 +624,7 @@ function visualize() {
         ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
         for (let i = 0; i < bufferLength; i++) {
-            const barHeight = dataArray[i] * 0.65;
+            const barHeight = dataArray[i] * 0.45;
 
             const r = barHeight + (20 * (i / bufferLength));
             const g = 210 * (i / bufferLength);
