@@ -25,7 +25,9 @@ var randomized=false;
 //Player is hidden by default and is visible only when a song is clicked.
 playerHead.style.display = "none";
 
-
+let context = null;
+let source = null;
+let analyser = null;
 function mute_unmute(){
     if(currentSong.volume!=0){
         currentSong.pause();
@@ -353,9 +355,13 @@ const updatePlayer = ({ name, artist, song_path, image_path, id, duration,liked 
         endTime.innerHTML = duration;
 
     }
+    currentSong.addEventListener('play', function () {
+        visualize();
+    });
     currentSong.play();
     playBtn.style.display = "none";
-    pauseBtn.style.display = "inline";
+    pauseBtn.style.display = "inline"; 
+    
     //Return the current song 
     return currentSong;
 }
@@ -584,4 +590,51 @@ function filter_songs(category){
 }
 
 
+function visualize() {
+    
+    if (context === null || context.state === 'closed') {
+        context = new AudioContext();
+        analyser = context.createAnalyser();
+        source = context.createMediaElementSource(currentSong);
+        source.connect(analyser);
+        analyser.connect(context.destination);
+    }
+    
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
 
+    analyser.fftSize = 256;
+
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+
+    const WIDTH = canvas.width;
+    const HEIGHT = canvas.height;
+    const barWidth = (WIDTH / bufferLength) * 2.5;
+    let x = 0;
+
+    function renderFrame() {
+        requestAnimationFrame(renderFrame);
+
+        x = 0;
+
+        analyser.getByteFrequencyData(dataArray);
+
+        ctx.fillStyle = "#000";
+        ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+        for (let i = 0; i < bufferLength; i++) {
+            const barHeight = dataArray[i] * 0.65;
+
+            const r = barHeight + (20 * (i / bufferLength));
+            const g = 210 * (i / bufferLength);
+            const b = 60;
+
+            ctx.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
+            ctx.fillRect(x, HEIGHT - barHeight, barWidth, barHeight);
+
+            x += barWidth + 1;
+        }
+    }
+    renderFrame();
+}
