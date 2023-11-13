@@ -216,7 +216,8 @@
 
   <!-- Music Player Head -->
 
-  <div id="player">
+  <div id="player" >
+      <canvas id="canvas"></canvas>
     <div id="player__artist">
       <img src="../static/images/artist_image.jpeg" alt="artist image" class="artist_image" />
       <span class="artist_details">
@@ -248,6 +249,7 @@
       <i class="fas fa-volume-up" id="mute" title="Volume" onclick="mute_unmute()"></i>
       <input type="range" class="player_line" id="volume-bar" min="0" max="1" step="0.1" value="1">
     </div>
+    
   </div>
 
 <div id="modal-container">
