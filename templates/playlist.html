@@ -19,10 +19,15 @@
     
 </head>
 <body>
-    <h1 style="color: white;">playlist name {{ request.args.get("category") }}</h1>
+
+<div class="background-playlist"></div>
+<div>
+    <h1 style="color: white; padding: 20px;" >Trending {{ request.args.get("category") }} Songs</h1>
+
     <div id="playlist-songs" class="tab__collection_main" style="width:100%;flex-wrap:wrap;margin:0;padding:0;height:fit-content;justify-content:space-around;">
         <!-- Display search results here -->
     </div>
+
 
     <div id="player">
         <div id="player__artist">
@@ -59,4 +64,6 @@
             <input type="range" class="player_line" id="volume-bar" min="0" max="1" step="0.1" value="1">
         </div>
     </div>
+</div>
 </body>
+</html>

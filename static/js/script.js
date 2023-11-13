@@ -564,8 +564,26 @@ const playlistsongs = (searchTerm) => {
     });
 };
 
-function playlist_songs(){
+function playlist_bengali(){
     let category_p =document.getElementById("bengali").textContent;
+    location.href = "/playlist?category=" + category_p;
+
+}
+
+function playlist_hindi(){
+    let category_p =document.getElementById("hindi").textContent;
+    location.href = "/playlist?category=" + category_p;
+
+}
+
+function playlist_english(){
+    let category_p =document.getElementById("english").textContent;
+    location.href = "/playlist?category=" + category_p;
+
+}
+
+function playlist_pop(){
+    let category_p =document.getElementById("pop").textContent;
     location.href = "/playlist?category=" + category_p;
 
 }
