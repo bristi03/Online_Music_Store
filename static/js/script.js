@@ -455,7 +455,7 @@ const updateSearchResults = (searchResults) => {
         searchoup.appendChild(createCard(song));
     });
     if(searchResults.length==0){
-        Reset_all();
+        searchoup.innerHTML = `<h3 style="color:white">No Mathes Found! You may have mispelled or Song may not yet be available.</h3>`;
     }
 };
 
