@@ -42,7 +42,7 @@
           <div style="color: #fafae8; align-items: center;text-align: center;margin-top: 30px; font-size: 1.5rem; font-weight: bold;">AudioWaves</div>
       </div>
       <div id="navigation">
-          <a href="#" class="navigation_item">
+          <a href="#main" class="navigation_item">
               <i class="fas fa-home"></i> 
               <span>Home</span>
           </a>
@@ -62,7 +62,7 @@
               </span> 
               <span>Create Playlist</span>
           </a>
-          <a href="#" class="cta_item">
+          <a href="#liked_songs" class="cta_item">
               <span class="cta__icon" id="heart">
                   <i class="fas fa-heart"></i>
               </span> 
@@ -141,11 +141,11 @@
               <h1 class="card__heading">Trending Today</h1>
             </div>
             <div class="card__collection">
-              <div class="card_top">
+              <div class="card_top" onclick="playlist_songs()">
                 <img src="../static/images/content/finshots.jpg" alt="Finshots" />
                 <div class="card__info">
-                  <p class="card_name">Finshots Daily</p>
-                  <p class="card_artist">Finshots</p>
+                  <p class="card_name" id="bengali">Bengali</p>
+                  <p class="card_artist">Hits</p>
                 </div>
                 <i class="fas fa-circle"></i>
               </div>
@@ -175,7 +175,7 @@
 
           <!-- Common Card Containers  -->
 
-          <div class="card__container">
+          <div class="card__container" id="liked_songs">
             <div class="card__title">
               <h1 class="card__heading">Your Liked Songs</h1>
               <p>SEE ALL</p>

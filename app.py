@@ -213,6 +213,10 @@ def Home_page():
 def get_search():
     return render_template('search.html')
 
+@app.get('/playlist')
+def get_playlist():
+    return render_template('playlist.html')
+
 @app.post('/like')
 def like():
     data=request.get_json()

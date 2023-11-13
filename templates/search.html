@@ -20,8 +20,44 @@
 </head>
 <body>
     <!-- Body content -->
+    <div id="sidebar">
+      <div id="logo">
+          <img src="../static/images/logo.png" alt="spotify logo" style="filter: invert();height: 50px;width: 55px;"/>
+          <div style="color: #fafae8; align-items: center;text-align: center;margin-top: 30px; font-size: 1.5rem; font-weight: bold;">AudioWaves</div>
+      </div>
+      <div id="navigation">
+          <a href="/home" class="navigation_item">
+              <i class="fas fa-home"></i> 
+              <span>Home</span>
+          </a>
+          <a href="/search" class="navigation_item">
+            <i class="fas fa-search"></i>
+            <span>Search</span>
+        </a>
+          <a href="#" class="navigation_item">
+              <i class="fas fa-grip-lines-vertical"></i> 
+              <span>Your Library</span>
+          </a>
+      </div>
+      <div id="cta">
+          <a href="#" class="cta_item">
+              <span class="cta__icon" id="plus">
+                  <i class="fas fa-plus"></i>
+              </span> 
+              <span>Create Playlist</span>
+          </a>
+          <a href="/home" class="cta_item">
+              <span class="cta__icon" id="heart">
+                  <i class="fas fa-heart"></i>
+              </span> 
+              <span>Liked Songs</span>
+          </a>
+  </div>
+</div>
+
     
-    <div class="background" ></div>
+<div class="background" ></div>
+<div>
     <div style="display:grid;width:100%;">
     <div style="display:flex;justify-content:center;justify-self:center;align-self:center;align-items:center;width:40%;">
         <form id="search-form" onsubmit="()=> {event.preventDefault()}">

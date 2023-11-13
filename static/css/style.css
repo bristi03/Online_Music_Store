@@ -30,6 +30,10 @@ if you're using VS Code, use Ctrl + F to search what you need.
     --text-inactive: #121212;
 }
 
+html{
+  scroll-behavior: smooth;
+}
+
 body{
   font-family: "Lato", sans-serif;
     width: 100%;
@@ -501,6 +505,29 @@ nav {
 
 #pauseBtn{
   display: none;
+}
+
+.tab__collection_main{
+  display: inline-block;
+  margin-right: 15px;
+  align-items: center;
+  overflow-x: scroll;
+  transition: all 250ms;
+}
+
+.tab{
+  display: flex;
+  height: 80px;
+  width: 100%;
+  margin: 20px;
+}
+.tab:hover{
+  background-color: #3b3b3b;
+}
+
+.tab_info{
+  color: white;
+  padding-left: 20px;
 }
 
 /* Adding Resposiveness to the app */

@@ -44,6 +44,7 @@ function mute_unmute(){
     }
 }
 //Function to create card and add functionality to update player head.
+
 const createCard = (song) => {
    
     const card = document.createElement("div");
@@ -79,6 +80,43 @@ const createCard = (song) => {
     
     //Return the dynamic card element.
     return card;
+}
+
+const createTab = (song) => {
+   
+    const tab = document.createElement("div");
+    const img = document.createElement("img");
+    const tabInfo = document.createElement("div");
+    const tabName = document.createElement("p");
+    const tabArtist = document.createElement("p");
+
+    //Assigning Classes to the elements created.
+    tab.className = "tab";
+    tabInfo.className = "tab_info";
+    tabName.className = "tab_name";
+    tabArtist.className = "tab_artist";
+
+    //Adding the song details to the card.
+    tabName.innerHTML = song.name;
+    tabArtist.innerHTML = song.artist;
+    img.src = song.image_path;
+    img.alt = song.name;
+
+    //Structuring the card
+    tabInfo.append(tabName, tabArtist);
+    tab.append(img, tabInfo);
+
+    //Adding functionality to the card to update the player head on click
+    tab.onclick = function(){
+        playerHead.style.display = "flex";
+        currentSong = updatePlayer(song);
+        currentSongId=song.id;
+        playPauseFunc(currentSong);
+        forwdBackwdFunc();
+    }
+    
+    //Return the dynamic card element.
+    return tab;
 }
 
 //Adds functionality to the play and pause buttons to play the current song.
@@ -376,14 +414,22 @@ document.addEventListener("DOMContentLoaded", async () => {
             
             songs=data.songs;
             // Use the 'songs' variable here or perform any operations needed
-            console.log(songs); // Just an example to display the 'songs' array in the console
+            console.log(songs);
+             // Just an example to display the 'songs' array in the console
+             console.log(location.href);
         })
         .catch(error => {
             console.error('Error fetching the data:', error);
         });
     if (location.href.endsWith("search")) {
         displayAllSongs();
-    }else
+    }
+    else if(location.href.startsWith("http://127.0.0.1:8080/playlist")){
+        let query_params = new URLSearchParams(window.location.search);
+        let category = query_params.get("category");
+        filter_songs(category);
+    }
+    else
         updateCollection();
 });
 
@@ -505,6 +551,37 @@ function Reset_all() {
     displayAllSongs();
 }
 
+const playlistsongs = (searchTerm) => {
+    return songs.filter((song) => {
+        const lowerCaseSearchTerm = searchTerm.toLowerCase();
+        const lowerCaseSongName = song.name.toLowerCase();
+        const lowerCaseArtist = song.artist.toLowerCase();
+
+        return (
+            lowerCaseSongName.includes(lowerCaseSearchTerm) ||
+            lowerCaseArtist.includes(lowerCaseSearchTerm)
+        );
+    });
+};
+
+function playlist_songs(){
+    let category_p =document.getElementById("bengali").textContent;
+    location.href = "/playlist?category=" + category_p;
+
+}
+
+playlist_out = document.getElementById("playlist-songs")
+
+function filter_songs(category){
+    playlist_out.innerHTML ="";
+    songs.forEach((song) => {
+        if (song.category.toLowerCase().includes(category.toLowerCase())) 
+        {
+            console.log(song);
+            playlist_out.appendChild(createTab(song));
+        }
+    });
+}
 
 
 
