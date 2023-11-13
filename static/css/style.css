@@ -32,7 +32,7 @@ if you're using VS Code, use Ctrl + F to search what you need.
 
 body{
   font-family: "Lato", sans-serif;
-    width: 100vh;
+    width: 100%;
     height: 100vh;
     background: linear-gradient(0deg, rgb(177, 74, 74) 0%, rgb(19, 19, 19) 30%, rgba(22, 22, 22, 1) 50%, #202020 100%);
 }
@@ -583,12 +583,15 @@ nav {
 
 .background{
   background-image: url("../images/bg.jpg");
+  background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   filter: blur(1px);
   width: 100%;
   height: 100vh;
-  background-size: cover;
   position: absolute;
   display: flex;
   justify-content: space-between;
   z-index: -1;
+  
 }

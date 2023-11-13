@@ -20,14 +20,23 @@
 </head>
 <body>
     <!-- Body content -->
-    <div class="background"></div>
-    <form id="search-form">
-        <input type="text" id="search-input" placeholder="Search for songs or artists..." required />
-        <button id="searchBtn" type="submit" onclick="search()">Search</button>
-    </form>
-    <div id="search-output" class="card__collection_main" style="width:180%;flex-direction:row;flex-wrap:wrap;;margin-top:5%;margin-left:10%;">
+    
+    <div class="background" ></div>
+    <div style="display:grid;width:100%;">
+    <div style="display:flex;justify-content:center;justify-self:center;align-self:center;align-items:center;width:40%;">
+        <form id="search-form" onsubmit="()=> {event.preventDefault()}">
+            <input  type="text" id="search-input" oninput="search()" placeholder="Search for songs or artists..." required />
+            <button id="searchBtn" type="button" onclick="Reset_all()">Reset</button>
+    
+        </form>
+    </div>
+    </div>
+ 
+    <div id="search-output" class="card__collection_main" style="width:100%;flex-wrap:wrap;margin:0;padding:0;height:fit-content;justify-content:space-around;">
         <!-- Display search results here -->
     </div>
+    
+
     <div id="player">
         <div id="player__artist">
             <img src="../static/images/artist_image.jpeg" alt="artist image" class="artist_image" />

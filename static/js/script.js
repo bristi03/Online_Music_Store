@@ -454,6 +454,9 @@ const updateSearchResults = (searchResults) => {
     searchResults.forEach((song) => {
         searchoup.appendChild(createCard(song));
     });
+    if(searchResults.length==0){
+        Reset_all();
+    }
 };
 
 const searchSongs = (searchTerm) => {
@@ -489,4 +492,19 @@ const search= () => {
         displayAllSongs();
     }
 }
+
+function Reset_all() {
+    // Get the parent element
+    event.preventDefault();
+    var parent = document.getElementById('search-output');
+
+    // Remove all children
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+    displayAllSongs();
+}
+
+
+
 
