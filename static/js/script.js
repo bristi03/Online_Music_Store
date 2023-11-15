@@ -576,6 +576,18 @@ function playlist_bengali(){
 
 }
 
+function playlist_romantic(){
+    let category_p =document.getElementById("romantic").textContent;
+    location.href = "/playlist?category=" + category_p;
+
+}
+
+function playlist_dance(){
+    let category_p =document.getElementById("dance").textContent;
+    location.href = "/playlist?category=" + category_p;
+
+}
+
 function playlist_hindi(){
     let category_p =document.getElementById("hindi").textContent;
     location.href = "/playlist?category=" + category_p;

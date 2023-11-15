@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify - Web Player</title>
-    <link rel="icon" href="static/images/icon.png" />
+    <title>AudioWaves-Web Player</title>
+    <link rel="icon" href="static/images/logo.png" />
     <link rel="stylesheet" href="../static/css/style.css">
 
     <link
@@ -76,13 +76,12 @@
               <li class="music__item"><a href="#" class="music__link">Music Hip-Hop 1</a></li>
               <li class="music__item"><a href="#" class="music__link">Music Hip-Hop 2</a></li>
               <li class="music__item"><a href="#" class="music__link">Music Hip-Hop 3</a></li>
-          </ul>-->
+          </ul>
           <div class="download__item">
               <a href="#" id="download__link">
                   <i class="fas fa-arrow-circle-down"></i> Install App
-              </a>
-                
-          </div>
+              </a>     
+          </div>-->
           {% if user.IsAdmin %}
           <div class="download__item">
             <a href="#" id="Add_song" onclick="openModal()">
@@ -142,7 +141,7 @@
             </div>
             <div class="card__collection">
               <div class="card_top" onclick="playlist_bengali()">
-                <img src="../static/images/content/finshots.jpg" alt="Finshots" />
+                <img src="../static/images/content/jawlphoring.jfif" alt="Bengali Hits" />
                 <div class="card__info">
                   <p style="display: none;" id="bengali">Bengali</p>
                   <p class="card_name">Bengali Hits</p>
@@ -151,7 +150,7 @@
                 <i class="fas fa-circle"></i>
               </div>
               <div class="card_top" onclick="playlist_hindi()">
-                <img src="../static/images/content/timFerriss.jpg" alt="Tim Ferris" />
+                <img src="../static/images/content/hindi-hits.jpg" alt="Bollywood Hits" />
                 <div class="card__info">
                   <p style="display: none;" id="hindi">Hindi</p>
                   <p class="card_name">Bollywood Hits</p>
@@ -159,15 +158,31 @@
                 </div>
               </div>
               <div class="card_top" onclick="playlist_english()">
-                <img src="../static/images/content/zerodhaPodcast.jpg" alt="Zerodha Educate" />
+                <img src="../static/images/content/eng-hit.webp" alt="English Hits" />
                 <div class="card__info">
                   <p style="display: none;" id="english">English</p>
-                  <p class="card_name">English Pop</p>
+                  <p class="card_name">English Hits</p>
                   <p class="card_artist">Ed Sheeran and more</p>
                 </div>
               </div>
+              <div class="card_top" onclick="playlist_romantic()">
+                <img src="../static/images/content/romantic.jfif" alt="Romantic Hits" />
+                <div class="card__info">
+                  <p style="display: none;" id="romantic">Romantic</p>
+                  <p class="card_name">Romantic Hits</p>
+                  <p class="card_artist">Arijit Singh and more</p>
+                </div>
+              </div>
+              <div class="card_top" onclick="playlist_dance()">
+                <img src="../static/images/content/party.jfif" alt="Dance Hits" />
+                <div class="card__info">
+                  <p style="display: none;" id="dance">Dance</p>
+                  <p class="card_name">Party Mix</p>
+                  <p class="card_artist">Party dance songs</p>
+                </div>
+              </div>
               <div class="card_top" onclick="playlist_pop()">
-                <img src="../static/images/content/lofi.jpg" alt="Lofi" />
+                <img src="../static/images/content/pop.webp" alt="Lofi" />
                 <div class="card__info">
                   <p style="display: none;" id="pop">Pop</p>
                   <p class="card_name">Pop Music</p>
@@ -226,6 +241,7 @@
       </span>
       <i class="fas fa-heart likeBtn" title="Like Song"></i>
       <i class="fas fa-external-link-alt"></i>
+      <i class="fas fa-arrow-circle-down" title="Purchase"></i>
     </div>
     <div id="player__controls">
       <div id="controls">
