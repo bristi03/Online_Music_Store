@@ -619,6 +619,10 @@ function filter_songs(category){
     });
 }
 
+function upgrade(){
+    window.location.href = "/upgrade";
+}
+
 
 function visualize() {
     

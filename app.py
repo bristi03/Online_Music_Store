@@ -217,6 +217,10 @@ def get_search():
 def get_playlist():
     return render_template('playlist.html')
 
+@app.get('/upgrade')
+def upgrade():
+    return render_template('upgrade.html')
+
 @app.post('/like')
 def like():
     data=request.get_json()
