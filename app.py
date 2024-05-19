@@ -26,18 +26,18 @@ firebase=pyrebase.initialize_app(firebase_config)
 auth=firebase.auth()
 
 app=Flask(__name__)
-app.config['SECRET_KEY'] = '$wX2RjLzA3bTkH1iGfSg4MnC5QoDpUqV8xYvZ9sE6uF7tIyPwN'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 
 app.config["SESSION_TYPE"] = "mongodb"
 
-mongo_uri="mongodb+srv://maitybristi53:SllXwJZSpfEqQcpm@cluster0.r0oeefw.mongodb.net/UserData?ssl=true"
+mongo_uri=os.environ.get('DATABASE_URL')
 
 mongo=PyMongo(app,mongo_uri,port=9999)
 db=mongo.db
 fs = GridFS(db)
 
 app.config["SESSION_MONGODB"] = pymongo.MongoClient(
-    host="mongodb+srv://maitybristi53:SllXwJZSpfEqQcpm@cluster0.r0oeefw.mongodb.net/?ssl=true"
+    host=os.environ.get('DATABASE_URL')
 )
 app.config["SESSION_MONGODB_DB"] = "UserSessions"
 app.config["SESSION_MONGODB_COLLECT"] = "sessions"
